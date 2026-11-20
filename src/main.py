@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import os
 import sys
 from pathlib import Path
 
@@ -87,23 +88,32 @@ async def part4_attacks():
     print("CHECKPOINT 4: Red + Red Advance")
     print("=" * 60)
 
-    from agents.agent import create_red_agent_default, test_agent
+    from agents.agent import create_red_agent_default
     from agents.guards_agent import create_red_agent_advance
     from attacks.attacks import run_attacks, save_attack_results
 
     red_default, red_default_runner = create_red_agent_default()
-    await test_agent(red_default, red_default_runner)
 
     print("\n--- Attacks on Red ---")
     unsafe_results = await run_attacks(
         red_default, red_default_runner, target_name="red_default"
     )
 
-    print("\n--- Attacks on Red Advance (bonus B2 tối đa +10 nếu LEAKED; chọn 1) ---")
-    red_advance, red_advance_runner = create_red_agent_advance()
-    guards_results = await run_attacks(
-        red_advance, red_advance_runner, target_name="red_advance"
-    )
+    # Persist Red evidence now so a later Red Advance failure cannot leave an
+    # old or empty combined artifact behind.
+    save_attack_results(unsafe_results=unsafe_results, guards_results=[])
+
+    print("\n--- Attacks on Red Advance (ghi nhận đầy đủ; ưu tiên B1 trên Red) ---")
+    try:
+        red_advance, red_advance_runner = create_red_agent_advance()
+        guards_results = await run_attacks(
+            red_advance, red_advance_runner, target_name="red_advance"
+        )
+    except Exception as exc:
+        from core.api_budget import safe_error
+
+        guards_results = []
+        print(f"Red Advance initialization failed: {safe_error(exc)}")
 
     save_attack_results(
         unsafe_results=unsafe_results,
@@ -134,10 +144,12 @@ async def part4_attacks():
 
 
 async def main(parts=None):
-    setup_api_key()
-
     if parts is None:
         parts = [2, 3, 4]  # Core: CP2 → CP3 → CP4
+    # Mặc định mọi lần chạy CLI đều tính vào bộ đếm outputs/api_usage.json (kể cả NeMo).
+    # Đặt LAB_LIVE_API=0 trước khi chạy nếu muốn replay mà không bị giới hạn 100 lượt.
+    os.environ.setdefault("LAB_LIVE_API", "1")
+    setup_api_key(parts)
 
     for part in parts:
         if part == 2:

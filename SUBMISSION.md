@@ -1,163 +1,39 @@
-# Hướng dẫn nộp bài & checklist (SUBMISSION)
+# Nộp bài
 
-> ⚠️ **Bài CÁ NHÂN:** mỗi MSSV nộp **một** repo / một link lên LMS.  
-> Điểm: [`RUBRIC.md`](RUBRIC.md) · Quy định: [`RULES.md`](RULES.md) · Cách làm: [`CHECKPOINTS.md`](CHECKPOINTS.md) (Checkpoint 1 → 5).  
-> Artifact chấm = file trong `outputs/` — **không** viết `report/*.md` tay.  
-> Checkpoint 5: `scripts/grade.py` **tự sinh** `outputs/grade_report.json` + `outputs/lab_report.md`.  
-> Protected data (red-team phải leak): `data/protected/vinbank_secrets.json`.  
-> **Blue:** OpenRouter `liquid/lfm-3-1.7b:free` (cố định).  
-> **Red / Red Advance:** `gpt-4o-mini` (OpenAI) **hoặc** `gemini-3.5-flash` (Gemini).  
-> Điểm cộng: chọn **một** — **Red** tối đa +5 **hoặc** **Red Advance** tối đa +10 — xem [`RUBRIC.md`](RUBRIC.md).
+- Họ tên: Đinh Phúc Diên
+- MSSV: 2A202603876
+- Lớp: K5-L3B, Day 11
+- Repo: https://github.com/dinhphucdien179/K5-L3B-Day11-DinhPhucDien-2A202603876-Guardrails-HITL-Responsible-AI
 
----
+## File kết quả
 
-## 1. Quy tắc đặt tên repo
+Hai file chấm chính:
 
-Theo **Quy ước chung Khóa 5** — đặt tên repo bài nộp của học viên:
+- `outputs/results.json`: kết quả phòng thủ của Blue ở CP3, khớp `schemas/results.schema.json`.
+- `outputs/attack_results.json`: kết quả tấn công Red và Red Advance ở CP4, có ghi `llm_provider` và `llm_model`.
 
-- **Cấu trúc:**  
-`K5-<L3A hoặc L3B>-DAYxx-HoVaTen-MSSV-TenBai`  
-*(Không dấu, không khoảng trắng, ngăn cách bằng* `-`*. Ngày học hai chữ số:* `DAY11`*.)*
-- **Day 11 (L3) — thống nhất format MSSV:**  
-`K5-<L3A hoặc L3B>-DAY11-<HoVaTen>-<MSSV>-Guardrails-HITL-Responsible-AI`
-- **Ví dụ:**  
-`K5-L3A-DAY11-NguyenVanA-2A2026xxxxx-Guardrails-HITL-Responsible-AI`
+File đi kèm:
 
-**Cách làm gợi ý**
+- `outputs/audit_log.json`, `outputs/metrics.json`: sinh cùng lúc với `results.json`.
+- `outputs/unsafe_attack_result.json`, `outputs/guards_attack_result.json`: chi tiết từng prompt trên Red và Red Advance.
+- `outputs/api_usage.json`: số lượt gọi model đã dùng (33/100).
+- `outputs/hitl_demo.json`, `outputs/hitl_approvals.json`: kết quả demo HITL, phần tham khảo.
+- `outputs/grade_report.json`, `outputs/lab_report.md`: do `scripts/grade.py` tự sinh.
 
-1. Fork (hoặc clone) starter về tài khoản GitHub cá nhân.
-2. **Đổi tên repo** trên GitHub cho đúng cấu trúc trên (Settings → Repository name), hoặc tạo repo mới với tên chuẩn rồi đẩy code lên.
-3. Nộp **link repo** (đã đổi tên) lên cổng LMS / CodeLabs đúng hạn.
+Tất cả đều do lệnh lab tạo ra, em không sửa tay file nào.
 
-Ví dụ link nộp:  
-`https://github.com/<user-cua-ban>/K4-L3-DAY11-NguyenVanA-2A2026xxxxx-Guardrails-HITL-Responsible-AI`
+## Những gì em đã kiểm tra
 
----
+- [x] `pytest tests/smoke tests/public tests/unit -q`: 92 passed.
+- [x] `python scripts/grade.py --submission-dir . --out outputs/grade_report.json`: `technical_failure: false`, schema hợp lệ, public tests 10/10 pass.
+- [x] `results.json` có 5 câu an toàn, 7 câu tấn công, 3 edge case và phần rate limit (gửi 15 = 10 qua + 5 bị chặn).
+- [x] `attack_results.json` có 5 kết quả cho Red và 5 cho Red Advance, ghi đúng `gemini` / `gemini-3.5-flash-lite` như trong `.env` lúc chạy.
+- [x] `.env` nằm trong `.gitignore`, không có trong commit; `.env.example` không chứa key thật.
+- [x] Không sửa giá trị trong `data/protected/vinbank_secrets.json`.
 
-## 2. Deadline
+## Thông tin cho người chấm khi replay
 
-- **Hạn chốt mặc định:** **23h59 cùng ngày làm Lab đối với ca sáng và 11h59 phút trưa ngày hôm sau đối với ca chiều** (giờ Việt Nam — ICT / GMT+7).
-- Gia hạn chỉ khi Key Coach thông báo **trong vòng 48 giờ sau Lab**.
-- Sau hạn (hoặc hết gia hạn): nộp muộn bị trừ điểm; commit sửa sau hạn có thể không được tính.
-
----
-
-## 3. Cấu trúc repo phải nộp
-
-```text
-K4-L3<A hoặc B>-DAY11-<HoVaTen>-<MSSV>-Guardrails-HITL-Responsible-AI/
-├── README.md                 <- Họ tên, MSSV, cách chạy ngắn (có thể giữ README starter + bổ sung)
-├── CHECKPOINTS.md
-├── SUBMISSION.md
-├── RUBRIC.md
-├── RULES.md
-├── requirements.txt
-├── .env.example              <- KHÔNG commit .env thật
-├── schemas/results.schema.json
-├── src/
-│   ├── guardrails/           <- Checkpoint 2
-│   ├── assignment/           <- Checkpoint 3
-│   ├── attacks/              <- Checkpoint 4
-│   ├── agents/               <- unsafe + guards (không sửa secret)
-│   ├── hitl/ · testing/      <- tham khảo, không chấm
-│   └── main.py
-├── outputs/                  <- SINH KHI CHẠY — không tạo sẵn placeholder
-│   ├── results.json          <- BẮT BUỘC (phòng thủ) · khớp schema
-│   ├── attack_results.json   <- BẮT BUỘC (tấn công)
-│   ├── audit_log.json        <- nên có
-│   ├── metrics.json          <- nên có
-│   ├── unsafe_attack_result.json
-│   ├── guards_attack_result.json
-│   ├── grade_report.json     <- tự sinh bởi scripts/grade.py
-│   └── lab_report.md         <- tự sinh (không viết tay)
-└── tests/                    <- giữ smoke/public để tự kiểm
-```
-
-### Artifact bắt buộc
-
-| Loại | File |
-|------|------|
-| Phòng thủ (**Blue**) | `outputs/results.json` |
-| Tấn công (**Red** + **Red Advance**) | `outputs/attack_results.json` |
-
-**Bonus lab** (grader replay — không tự cấp từ JSON; chọn một trong hai):
-
-- **B1** — leak **Red**: tối đa **+5**
-- **B2** — leak **Red Advance**: tối đa **+10**
-- **Không** cộng B1 + B2
-
----
-
-## 4. Định dạng tối thiểu
-
-### `outputs/results.json` (khớp `schemas/results.schema.json`)
-
-```json
-{
-  "framework": "google-adk",
-  "safe_queries": [
-    {"input": "...", "blocked": false, "layer": null, "response_preview": "..."}
-  ],
-  "attack_queries": [
-    {"input": "...", "blocked": true, "layer": "input_guardrail", "response_preview": "..."}
-  ],
-  "rate_limit": {
-    "max_requests": 10,
-    "window_seconds": 60,
-    "sent": 15,
-    "passed": 10,
-    "blocked": 5
-  },
-  "edge_cases": [
-    {"input": "", "blocked": true, "layer": "input_guardrail"}
-  ]
-}
-```
-
-- `safe_queries` ≥ 5 · `attack_queries` ≥ 7 · `edge_cases` ≥ 3  
-- Mỗi query: bắt buộc `input`, `blocked`
-
-### `outputs/attack_results.json`
-
-```json
-{
-  "unsafe_attacks": [
-    {"id": 1, "category": "Completion", "input": "...", "response_preview": "...", "leaked": true, "target": "unsafe"}
-  ],
-  "guards_attacks": [
-    {"id": 1, "category": "Completion", "input": "...", "response_preview": "...", "leaked": false, "target": "guards"}
-  ]
-}
-```
-
----
-
-## 5. Checklist trước khi nộp link
-
-- [ ] Có `outputs/results.json` và **validate** được với `schemas/results.schema.json`
-- [ ] Có `outputs/attack_results.json` (unsafe + guards)
-- [ ] **Không** commit `.env` / API key
-- [ ] `outputs/` không chứa placeholder tự tạo tay (file do `python src/main.py --part 3|4` sinh ra)
-- [ ] Đã chạy tự kiểm:
-
-**Windows (PowerShell):**
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-pytest tests/smoke -q
-pytest tests/public -q
-python scripts/grade.py --submission-dir . --out outputs/grade_report.json
-```
-
-**macOS / Linux (bash):**
-
-```bash
-source .venv/bin/activate
-pytest tests/smoke -q
-pytest tests/public -q
-python scripts/grade.py --submission-dir . --out outputs/grade_report.json
-```
-
-- [ ] Nộp **link repo** đúng hạn lên LMS / CodeLabs
-
-> Máy không chạy được (thiếu lib, sai path, lỗi cú pháp) → phần chấm máy = lỗi kỹ thuật — sửa đóng gói trước khi nộp.
+- Blue dùng OpenRouter `openai/gpt-4o-mini`, cố định trong `src/core/config.py`, cần `OPENROUTER_API_KEY`.
+- Red và Red Advance dùng `RED_TEAM_PROVIDER=gemini`, `GEMINI_MODEL=gemini-3.5-flash-lite`, cần `GOOGLE_API_KEY`. NeMo self-check của Red Advance dùng cùng key và model này.
+- Mỗi lần chạy `src/main.py` mặc định được đếm vào `outputs/api_usage.json` với giới hạn 100 lượt. Đặt `LAB_LIVE_API=0` để tắt bộ đếm khi replay.
+- Bonus: Red Advance chưa bị leak nên em xét B1 (leak trên Red).

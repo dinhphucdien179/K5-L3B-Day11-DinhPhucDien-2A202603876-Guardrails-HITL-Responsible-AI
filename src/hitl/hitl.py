@@ -6,6 +6,7 @@ Lab 11 — Optional enrichment: Human-in-the-Loop Design
   - 3 HITL decision points
 """
 from dataclasses import dataclass
+import math
 
 
 # ============================================================
@@ -28,6 +29,7 @@ HIGH_RISK_ACTIONS = [
     "change_password",
     "delete_data",
     "update_personal_info",
+    "update_customer_info",
 ]
 
 
@@ -86,13 +88,15 @@ class ConfidenceRouter:
         #      action="escalate", priority="high",
         #      requires_human=True, reason="Low confidence — escalating"
 
-        return RoutingDecision(
-            action="auto_send",
-            confidence=confidence,
-            reason="TODO: implement routing logic",
-            priority="low",
-            requires_human=False,
-        )  # TODO: Replace with implementation
+        if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not math.isfinite(confidence) or not 0 <= confidence <= 1:
+            raise ValueError("confidence must be finite and between 0 and 1")
+        if action_type in HIGH_RISK_ACTIONS:
+            return RoutingDecision("escalate", confidence, "High-risk action needs approval", "high", True)
+        if confidence >= self.HIGH_THRESHOLD:
+            return RoutingDecision("auto_send", confidence, "High confidence", "low", False)
+        if confidence >= self.MEDIUM_THRESHOLD:
+            return RoutingDecision("queue_review", confidence, "Medium confidence needs review", "normal", True)
+        return RoutingDecision("escalate", confidence, "Low confidence needs human judgment", "high", True)
 
 
 # ============================================================
@@ -115,33 +119,24 @@ class ConfidenceRouter:
 hitl_decision_points = [
     {
         "id": 1,
-        "name": "TODO: Name this decision point",
-        "trigger": "TODO: When does this trigger?",
-        "hitl_model": "TODO: human-in-the-loop / human-on-the-loop / human-as-tiebreaker",
-        "context_needed": "TODO: What does the reviewer need to see?",
-        "example": "TODO: Give a concrete example scenario",
-        "approval_path": "TODO: Explain approve, reject and timeout behavior",
-        "audit_fields": "TODO: List correlation ID, intent, diff and reviewer decision",
+        "name": "Chuyển tiền", "trigger": "transfer_money, mọi mức confidence",
+        "hitl_model": "human-in-the-loop", "context_needed": "Người yêu cầu, số tiền, người nhận và destination",
+        "example": "Chuyển 500000 VND", "approval_path": "Duyệt một lần; reject/timeout chặn; thay đổi phải duyệt lại",
+        "audit_fields": "approval_id, intent, payload hash, reviewer, decision, timestamps",
     },
     {
         "id": 2,
-        "name": "TODO: Name this decision point",
-        "trigger": "TODO: When does this trigger?",
-        "hitl_model": "TODO: human-in-the-loop / human-on-the-loop / human-as-tiebreaker",
-        "context_needed": "TODO: What does the reviewer need to see?",
-        "example": "TODO: Give a concrete example scenario",
-        "approval_path": "TODO: Explain approve, reject and timeout behavior",
-        "audit_fields": "TODO: List correlation ID, intent, diff and reviewer decision",
+        "name": "Cập nhật thông tin khách hàng", "trigger": "update_customer_info",
+        "hitl_model": "human-in-the-loop", "context_needed": "Danh tính và nội dung thay đổi đã che PII",
+        "example": "Cập nhật thông tin liên hệ", "approval_path": "Reviewer độc lập duyệt; reject/timeout chặn",
+        "audit_fields": "approval_id, intent, diff hash, reviewer, decision, timestamps",
     },
     {
         "id": 3,
-        "name": "TODO: Name this decision point",
-        "trigger": "TODO: When does this trigger?",
-        "hitl_model": "TODO: human-in-the-loop / human-on-the-loop / human-as-tiebreaker",
-        "context_needed": "TODO: What does the reviewer need to see?",
-        "example": "TODO: Give a concrete example scenario",
-        "approval_path": "TODO: Explain approve, reject and timeout behavior",
-        "audit_fields": "TODO: List correlation ID, intent, diff and reviewer decision",
+        "name": "Tư vấn vay chưa chắc chắn", "trigger": "confidence dưới 0.9",
+        "hitl_model": "human-as-tiebreaker", "context_needed": "Câu hỏi, bằng chứng và dữ liệu còn thiếu",
+        "example": "Hồ sơ khoản vay cần chuyên viên đối chiếu", "approval_path": "Chờ duyệt hoặc chuyển chuyên viên; timeout giữ lại",
+        "audit_fields": "approval_id, confidence source, reviewer, decision, timestamps",
     },
 ]
 

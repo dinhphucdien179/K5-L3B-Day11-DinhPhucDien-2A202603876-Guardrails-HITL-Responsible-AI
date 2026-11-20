@@ -1,0 +1,237 @@
+{
+  "limit": 100,
+  "used": 33,
+  "calls": [
+    {
+      "number": 1,
+      "provider": "openrouter",
+      "model": "liquid/lfm-3-1.7b:free",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:17:25.988271+00:00"
+    },
+    {
+      "number": 2,
+      "provider": "openrouter",
+      "model": "liquid/lfm-3-1.7b:free",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:18:50.501952+00:00"
+    },
+    {
+      "number": 3,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:19:34.203908+00:00"
+    },
+    {
+      "number": 4,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:19:38.211757+00:00"
+    },
+    {
+      "number": 5,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:19:39.367177+00:00"
+    },
+    {
+      "number": 6,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:19:40.443076+00:00"
+    },
+    {
+      "number": 7,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:19:41.517938+00:00"
+    },
+    {
+      "number": 8,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:19:43.166793+00:00"
+    },
+    {
+      "number": 9,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "nemo_self_check",
+      "timestamp": "2026-11-20T08:19:45.368376+00:00"
+    },
+    {
+      "number": 10,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:19:49.714459+00:00"
+    },
+    {
+      "number": 11,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "nemo_self_check",
+      "timestamp": "2026-11-20T08:19:51.476772+00:00"
+    },
+    {
+      "number": 12,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:55:17.833237+00:00"
+    },
+    {
+      "number": 13,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:56:13.259937+00:00"
+    },
+    {
+      "number": 14,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:56:15.878523+00:00"
+    },
+    {
+      "number": 15,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:56:23.006562+00:00"
+    },
+    {
+      "number": 16,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:56:25.917050+00:00"
+    },
+    {
+      "number": 17,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:56:29.059238+00:00"
+    },
+    {
+      "number": 18,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:56:30.534385+00:00"
+    },
+    {
+      "number": 19,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:59:01.272272+00:00"
+    },
+    {
+      "number": 20,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:59:04.546540+00:00"
+    },
+    {
+      "number": 21,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:59:11.104209+00:00"
+    },
+    {
+      "number": 22,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:59:13.756696+00:00"
+    },
+    {
+      "number": 23,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:59:16.333038+00:00"
+    },
+    {
+      "number": 24,
+      "provider": "openrouter",
+      "model": "openai/gpt-4o-mini",
+      "purpose": "blue_agent",
+      "timestamp": "2026-11-20T08:59:17.873160+00:00"
+    },
+    {
+      "number": 25,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:59:21.387859+00:00"
+    },
+    {
+      "number": 26,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:59:24.499845+00:00"
+    },
+    {
+      "number": 27,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:59:26.738597+00:00"
+    },
+    {
+      "number": 28,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:59:27.759110+00:00"
+    },
+    {
+      "number": 29,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:59:28.797708+00:00"
+    },
+    {
+      "number": 30,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:59:31.799555+00:00"
+    },
+    {
+      "number": 31,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "nemo_self_check",
+      "timestamp": "2026-11-20T08:59:35.146977+00:00"
+    },
+    {
+      "number": 32,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "red_main",
+      "timestamp": "2026-11-20T08:59:36.111031+00:00"
+    },
+    {
+      "number": 33,
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "nemo_self_check",
+      "timestamp": "2026-11-20T08:59:38.122725+00:00"
+    }
+  ]
+}

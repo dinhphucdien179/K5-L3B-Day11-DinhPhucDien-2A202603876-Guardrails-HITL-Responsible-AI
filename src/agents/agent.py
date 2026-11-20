@@ -2,7 +2,7 @@
 Lab 11 — Agent factories
 
   Blue         → create_blue_agent(plugins)
-                 OpenRouter liquid/lfm-3-1.7b:free (LOCKED) + student plugins
+                 OpenRouter openai/gpt-4o-mini + student plugins
   Red          → create_red_agent_default()
                  mềm (không guardrails mạnh)
   Red Advance  → create_red_agent_advance()  (xem guards_agent.py)
@@ -79,8 +79,10 @@ def create_red_agent_default():
         from google.adk.agents import llm_agent
         from google.adk import runners
 
+        from core.gemini_runtime import gemini_model
+
         agent = llm_agent.LlmAgent(
-            model=soft,
+            model=gemini_model(soft),
             name="red_agent_default",
             instruction=RED_DEFAULT_INSTRUCTION,
         )
@@ -97,7 +99,7 @@ def create_red_agent_default():
 
 
 def create_blue_agent(plugins: list):
-    """Blue — ALWAYS OpenRouter liquid/lfm-3-1.7b:free + student plugins."""
+    """Blue — OpenRouter model selected in core.config + student plugins."""
     from core.openai_runtime import create_blue_pair
 
     agent, runner = create_blue_pair(

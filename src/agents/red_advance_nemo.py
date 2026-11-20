@@ -327,6 +327,10 @@ class NemoRailsGuard:
         nemoguardrails = require_nemo()
         from nemoguardrails import LLMRails
 
+        if config is None and llm is None:
+            from core.nemo_model import create_nemo_model
+
+            llm = create_nemo_model()
         if config is None:
             config = build_rails_config(include_model=llm is None)
         self.version = getattr(nemoguardrails, "__version__", "?")
@@ -349,6 +353,10 @@ class NemoRailsGuard:
         try:
             result = await self.rails.check_async(messages, rail_types=[rail_type])
         except Exception as exc:  # fail-closed
+            from core.api_budget import BudgetExceeded
+
+            if isinstance(exc, BudgetExceeded):
+                raise
             self.stats["errors"] += 1
             self.stats[f"{stage}_blocked"] += 1
             print(f"[NeMo] {stage} rails error → fail-closed: {type(exc).__name__}")

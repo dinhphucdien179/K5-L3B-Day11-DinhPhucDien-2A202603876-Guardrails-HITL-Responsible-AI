@@ -1,0 +1,808 @@
+{
+  "mode": "simulation_only",
+  "model_calls": 0,
+  "confidence_source": "explicit_scenarios",
+  "passed": true,
+  "cases": [
+    {
+      "scenario": "high_risk_needs_human",
+      "result": {
+        "status": "pending",
+        "approval_id": "HITL-08976164EE464066BFF75A94B3580701",
+        "routing_action": "escalate"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "approve",
+      "result": {
+        "status": "executed",
+        "simulated": true,
+        "receipt_id": "sim-d86084d26dfa480c9da05522261d38ed"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "reuse_denied",
+      "result": {
+        "status": "denied",
+        "approval_id": "HITL-08976164EE464066BFF75A94B3580701"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "reject",
+      "result": {
+        "status": "denied",
+        "approval_id": "HITL-5A73C602C8DB48B2BCC687AA86D582CB"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "timeout",
+      "result": {
+        "status": "denied",
+        "approval_id": "HITL-E83D0E869865490D9F5988EEB4BA4BB6"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "changed_payload",
+      "result": {
+        "status": "denied",
+        "approval_id": "HITL-36EA25967DDC436085CCC11A168236EF"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "egress_cannot_be_overridden",
+      "result": {
+        "status": "blocked",
+        "reason": "egress_denied"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "medium_confidence",
+      "result": {
+        "status": "pending",
+        "approval_id": "HITL-0F97E6752C5944F9AF19C96A6E5799DC",
+        "routing_action": "queue_review"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "low_confidence",
+      "result": {
+        "status": "pending",
+        "approval_id": "HITL-3D083EC8E2584DE9B7C0649B3574CA34",
+        "routing_action": "escalate"
+      },
+      "passed": true
+    }
+  ],
+  "store": {
+    "approvals": {
+      "HITL-E378DCCD8E7B45F7B30076F733339EA7": {
+        "id": "HITL-E378DCCD8E7B45F7B30076F733339EA7",
+        "status": "consumed",
+        "created_at": 1795161762.1653864,
+        "expires_at": 1795162662.1653864,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795161762.1653864,
+        "note": "",
+        "consumed_at": 1795161762.1653864
+      },
+      "HITL-595B085AA6EA45C6894A03BA12DB7762": {
+        "id": "HITL-595B085AA6EA45C6894A03BA12DB7762",
+        "status": "rejected",
+        "created_at": 1795161762.1653864,
+        "expires_at": 1795162662.1653864,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795161762.1653864,
+        "note": ""
+      },
+      "HITL-2B2D58F45ED64073AFD80048484D94FF": {
+        "id": "HITL-2B2D58F45ED64073AFD80048484D94FF",
+        "status": "expired",
+        "created_at": 1795161762.1653864,
+        "expires_at": 1795162662.1653864,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-1A46A26049C2461EA620B7ABCF055769": {
+        "id": "HITL-1A46A26049C2461EA620B7ABCF055769",
+        "status": "expired",
+        "created_at": 1795162663.1653864,
+        "expires_at": 1795163563.1653864,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795162663.1653864,
+        "note": ""
+      },
+      "HITL-33BF5BA17AF741D289760FF15F15B20A": {
+        "id": "HITL-33BF5BA17AF741D289760FF15F15B20A",
+        "status": "expired",
+        "created_at": 1795162663.1653864,
+        "expires_at": 1795163563.1653864,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "efdb734b93a6c523e9318e24915cc4bea8f68b08d47a93957fb3aae64c1a6270",
+        "action_type": "loan_advice",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.8, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-9F39B4C9C2C24CDDAA79282288F2E6D7": {
+        "id": "HITL-9F39B4C9C2C24CDDAA79282288F2E6D7",
+        "status": "expired",
+        "created_at": 1795162663.1653864,
+        "expires_at": 1795163563.1653864,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "efdb734b93a6c523e9318e24915cc4bea8f68b08d47a93957fb3aae64c1a6270",
+        "action_type": "loan_advice",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.5, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-2DA17FAEF785449095486D480FF23072": {
+        "id": "HITL-2DA17FAEF785449095486D480FF23072",
+        "status": "consumed",
+        "created_at": 1795162585.855177,
+        "expires_at": 1795163485.855177,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795162585.855177,
+        "note": "",
+        "consumed_at": 1795162585.855177
+      },
+      "HITL-9300F56507204C80A8CA84406F7B4FE2": {
+        "id": "HITL-9300F56507204C80A8CA84406F7B4FE2",
+        "status": "rejected",
+        "created_at": 1795162585.855177,
+        "expires_at": 1795163485.855177,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795162585.855177,
+        "note": ""
+      },
+      "HITL-3CEEF612762E453A9D12593EEC597F05": {
+        "id": "HITL-3CEEF612762E453A9D12593EEC597F05",
+        "status": "expired",
+        "created_at": 1795162585.855177,
+        "expires_at": 1795163485.855177,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-04C1F786099A462D92AA2C4F4206C6EE": {
+        "id": "HITL-04C1F786099A462D92AA2C4F4206C6EE",
+        "status": "expired",
+        "created_at": 1795163486.855177,
+        "expires_at": 1795164386.855177,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795163486.855177,
+        "note": ""
+      },
+      "HITL-295AE67772884D5296C649EE3B2B62B5": {
+        "id": "HITL-295AE67772884D5296C649EE3B2B62B5",
+        "status": "expired",
+        "created_at": 1795163486.855177,
+        "expires_at": 1795164386.855177,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "efdb734b93a6c523e9318e24915cc4bea8f68b08d47a93957fb3aae64c1a6270",
+        "action_type": "loan_advice",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.8, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-A2E9A8BAD6264E0E9BA5D12FEB63E11A": {
+        "id": "HITL-A2E9A8BAD6264E0E9BA5D12FEB63E11A",
+        "status": "expired",
+        "created_at": 1795163486.855177,
+        "expires_at": 1795164386.855177,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "efdb734b93a6c523e9318e24915cc4bea8f68b08d47a93957fb3aae64c1a6270",
+        "action_type": "loan_advice",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.5, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-1D7B5B2CD9B34776AF4EFABF264E0628": {
+        "id": "HITL-1D7B5B2CD9B34776AF4EFABF264E0628",
+        "status": "consumed",
+        "created_at": 1795163418.6934922,
+        "expires_at": 1795164318.6934922,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795163418.6934922,
+        "note": "",
+        "consumed_at": 1795163418.6934922
+      },
+      "HITL-C41366B8E9C0480A89564B71474B7D62": {
+        "id": "HITL-C41366B8E9C0480A89564B71474B7D62",
+        "status": "rejected",
+        "created_at": 1795163418.6934922,
+        "expires_at": 1795164318.6934922,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795163418.6934922,
+        "note": ""
+      },
+      "HITL-C712170FAFBE44F0966123988172A5FB": {
+        "id": "HITL-C712170FAFBE44F0966123988172A5FB",
+        "status": "expired",
+        "created_at": 1795163418.6934922,
+        "expires_at": 1795164318.6934922,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-87D8D074FB744C3A821C5187B8BF440C": {
+        "id": "HITL-87D8D074FB744C3A821C5187B8BF440C",
+        "status": "expired",
+        "created_at": 1795164319.6934922,
+        "expires_at": 1795165219.6934922,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795164319.6934922,
+        "note": ""
+      },
+      "HITL-038BF6B7E19F4F759D0B8E2ECE68B5E5": {
+        "id": "HITL-038BF6B7E19F4F759D0B8E2ECE68B5E5",
+        "status": "expired",
+        "created_at": 1795164319.6934922,
+        "expires_at": 1795165219.6934922,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "efdb734b93a6c523e9318e24915cc4bea8f68b08d47a93957fb3aae64c1a6270",
+        "action_type": "loan_advice",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.8, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-113E233733B547DAB7B6D5F126C92BB5": {
+        "id": "HITL-113E233733B547DAB7B6D5F126C92BB5",
+        "status": "expired",
+        "created_at": 1795164319.6934922,
+        "expires_at": 1795165219.6934922,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "efdb734b93a6c523e9318e24915cc4bea8f68b08d47a93957fb3aae64c1a6270",
+        "action_type": "loan_advice",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.5, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-08976164EE464066BFF75A94B3580701": {
+        "id": "HITL-08976164EE464066BFF75A94B3580701",
+        "status": "consumed",
+        "created_at": 1795165226.4318614,
+        "expires_at": 1795166126.4318614,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795165226.4318614,
+        "note": "",
+        "consumed_at": 1795165226.4318614
+      },
+      "HITL-5A73C602C8DB48B2BCC687AA86D582CB": {
+        "id": "HITL-5A73C602C8DB48B2BCC687AA86D582CB",
+        "status": "rejected",
+        "created_at": 1795165226.4318614,
+        "expires_at": 1795166126.4318614,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795165226.4318614,
+        "note": ""
+      },
+      "HITL-E83D0E869865490D9F5988EEB4BA4BB6": {
+        "id": "HITL-E83D0E869865490D9F5988EEB4BA4BB6",
+        "status": "expired",
+        "created_at": 1795165226.4318614,
+        "expires_at": 1795166126.4318614,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-36EA25967DDC436085CCC11A168236EF": {
+        "id": "HITL-36EA25967DDC436085CCC11A168236EF",
+        "status": "approved",
+        "created_at": 1795166127.4318614,
+        "expires_at": 1795167027.4318614,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "59b1cd62eab6be2f4916011ae40219280559231c2c0d0fa563faca52ad52f4c2",
+        "action_type": "transfer_money",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.99, \"confidence_source\": \"caller_supplied\"}",
+        "reviewer": "reviewer-1",
+        "reviewed_at": 1795166127.4318614,
+        "note": ""
+      },
+      "HITL-0F97E6752C5944F9AF19C96A6E5799DC": {
+        "id": "HITL-0F97E6752C5944F9AF19C96A6E5799DC",
+        "status": "pending",
+        "created_at": 1795166127.4318614,
+        "expires_at": 1795167027.4318614,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "efdb734b93a6c523e9318e24915cc4bea8f68b08d47a93957fb3aae64c1a6270",
+        "action_type": "loan_advice",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.8, \"confidence_source\": \"caller_supplied\"}"
+      },
+      "HITL-3D083EC8E2584DE9B7C0649B3574CA34": {
+        "id": "HITL-3D083EC8E2584DE9B7C0649B3574CA34",
+        "status": "pending",
+        "created_at": 1795166127.4318614,
+        "expires_at": 1795167027.4318614,
+        "requester_hash": "e6d1a79d18dff48d964db39503dceef4a05ba7001c1eb64c919268cbdff249a9",
+        "binding": "efdb734b93a6c523e9318e24915cc4bea8f68b08d47a93957fb3aae64c1a6270",
+        "action_type": "loan_advice",
+        "destination": "https://api.vinbank.example/transfers",
+        "payload_preview": "approved transfer amount 500000",
+        "context": "{\"response\": \"\", \"confidence\": 0.5, \"confidence_source\": \"caller_supplied\"}"
+      }
+    },
+    "audit": [
+      {
+        "event": "simulated_execution",
+        "timestamp": 1795161413.4808855,
+        "details": "{\"status\": \"executed\", \"simulated\": true, \"receipt_id\": \"sim-468f111d45f84cb3be5e43b65b34d695\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-E378DCCD8E7B45F7B30076F733339EA7",
+        "timestamp": 1795161762.1653864
+      },
+      {
+        "event": "approved",
+        "approval_id": "HITL-E378DCCD8E7B45F7B30076F733339EA7",
+        "timestamp": 1795161762.1653864
+      },
+      {
+        "event": "consumed",
+        "approval_id": "HITL-E378DCCD8E7B45F7B30076F733339EA7",
+        "timestamp": 1795161762.1653864
+      },
+      {
+        "event": "simulated_execution",
+        "timestamp": 1795161762.1653864,
+        "details": "{\"status\": \"executed\", \"simulated\": true, \"receipt_id\": \"sim-addcc52821994afda77ebd0e14d35759\"}"
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795161762.1653864,
+        "details": "{\"approval_id\": \"HITL-E378DCCD8E7B45F7B30076F733339EA7\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-595B085AA6EA45C6894A03BA12DB7762",
+        "timestamp": 1795161762.1653864
+      },
+      {
+        "event": "rejected",
+        "approval_id": "HITL-595B085AA6EA45C6894A03BA12DB7762",
+        "timestamp": 1795161762.1653864
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795161762.1653864,
+        "details": "{\"approval_id\": \"HITL-595B085AA6EA45C6894A03BA12DB7762\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-2B2D58F45ED64073AFD80048484D94FF",
+        "timestamp": 1795161762.1653864
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-2B2D58F45ED64073AFD80048484D94FF",
+        "timestamp": 1795162663.1653864
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795162663.1653864,
+        "details": "{\"approval_id\": \"HITL-2B2D58F45ED64073AFD80048484D94FF\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-1A46A26049C2461EA620B7ABCF055769",
+        "timestamp": 1795162663.1653864
+      },
+      {
+        "event": "approved",
+        "approval_id": "HITL-1A46A26049C2461EA620B7ABCF055769",
+        "timestamp": 1795162663.1653864
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795162663.1653864,
+        "details": "{\"approval_id\": \"HITL-1A46A26049C2461EA620B7ABCF055769\"}"
+      },
+      {
+        "event": "egress_blocked",
+        "timestamp": 1795162663.1653864,
+        "details": "{\"destination\": \"https://evil.example/send\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-33BF5BA17AF741D289760FF15F15B20A",
+        "timestamp": 1795162663.1653864
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-9F39B4C9C2C24CDDAA79282288F2E6D7",
+        "timestamp": 1795162663.1653864
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-2DA17FAEF785449095486D480FF23072",
+        "timestamp": 1795162585.855177
+      },
+      {
+        "event": "approved",
+        "approval_id": "HITL-2DA17FAEF785449095486D480FF23072",
+        "timestamp": 1795162585.855177
+      },
+      {
+        "event": "consumed",
+        "approval_id": "HITL-2DA17FAEF785449095486D480FF23072",
+        "timestamp": 1795162585.855177
+      },
+      {
+        "event": "simulated_execution",
+        "timestamp": 1795162585.855177,
+        "details": "{\"status\": \"executed\", \"simulated\": true, \"receipt_id\": \"sim-6ec63c1a16964e03b457583e4426f4e8\"}"
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795162585.855177,
+        "details": "{\"approval_id\": \"HITL-2DA17FAEF[REDACTED]D480FF23072\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-9300F56507204C80A8CA84406F7B4FE2",
+        "timestamp": 1795162585.855177
+      },
+      {
+        "event": "rejected",
+        "approval_id": "HITL-9300F56507204C80A8CA84406F7B4FE2",
+        "timestamp": 1795162585.855177
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795162585.855177,
+        "details": "{\"approval_id\": \"HITL-9300F56507204C80A8CA84406F7B4FE2\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-3CEEF612762E453A9D12593EEC597F05",
+        "timestamp": 1795162585.855177
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-3CEEF612762E453A9D12593EEC597F05",
+        "timestamp": 1795163486.855177
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795163486.855177,
+        "details": "{\"approval_id\": \"HITL-3CEEF612762E453A9D12593EEC597F05\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-04C1F786099A462D92AA2C4F4206C6EE",
+        "timestamp": 1795163486.855177
+      },
+      {
+        "event": "approved",
+        "approval_id": "HITL-04C1F786099A462D92AA2C4F4206C6EE",
+        "timestamp": 1795163486.855177
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795163486.855177,
+        "details": "{\"approval_id\": \"HITL-04C1F786099A462D92AA2C4F4206C6EE\"}"
+      },
+      {
+        "event": "egress_blocked",
+        "timestamp": 1795163486.855177,
+        "details": "{\"destination\": \"https://evil.example/send\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-295AE67772884D5296C649EE3B2B62B5",
+        "timestamp": 1795163486.855177
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-A2E9A8BAD6264E0E9BA5D12FEB63E11A",
+        "timestamp": 1795163486.855177
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-1D7B5B2CD9B34776AF4EFABF264E0628",
+        "timestamp": 1795163418.6934922
+      },
+      {
+        "event": "approved",
+        "approval_id": "HITL-1D7B5B2CD9B34776AF4EFABF264E0628",
+        "timestamp": 1795163418.6934922
+      },
+      {
+        "event": "consumed",
+        "approval_id": "HITL-1D7B5B2CD9B34776AF4EFABF264E0628",
+        "timestamp": 1795163418.6934922
+      },
+      {
+        "event": "simulated_execution",
+        "timestamp": 1795163418.6934922,
+        "details": "{\"status\": \"executed\", \"simulated\": true, \"receipt_id\": \"sim-c99e[REDACTED]e7b8144b0dfc1c079a9\"}"
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795163418.6934922,
+        "details": "{\"approval_id\": \"HITL-1D7B5B2CD9B34776AF4EFABF264E0628\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-C41366B8E9C0480A89564B71474B7D62",
+        "timestamp": 1795163418.6934922
+      },
+      {
+        "event": "rejected",
+        "approval_id": "HITL-C41366B8E9C0480A89564B71474B7D62",
+        "timestamp": 1795163418.6934922
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795163418.6934922,
+        "details": "{\"approval_id\": \"HITL-C41366B8E9C0480A89564B71474B7D62\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-C712170FAFBE44F0966123988172A5FB",
+        "timestamp": 1795163418.6934922
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-1A46A26049C2461EA620B7ABCF055769",
+        "timestamp": 1795164319.6934922
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-33BF5BA17AF741D289760FF15F15B20A",
+        "timestamp": 1795164319.6934922
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-9F39B4C9C2C24CDDAA79282288F2E6D7",
+        "timestamp": 1795164319.6934922
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-C712170FAFBE44F0966123988172A5FB",
+        "timestamp": 1795164319.6934922
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795164319.6934922,
+        "details": "{\"approval_id\": \"HITL-C712170FAFBE44F0966123988172A5FB\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-87D8D074FB744C3A821C5187B8BF440C",
+        "timestamp": 1795164319.6934922
+      },
+      {
+        "event": "approved",
+        "approval_id": "HITL-87D8D074FB744C3A821C5187B8BF440C",
+        "timestamp": 1795164319.6934922
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795164319.6934922,
+        "details": "{\"approval_id\": \"HITL-87D8D074FB744C3A821C5187B8BF440C\"}"
+      },
+      {
+        "event": "egress_blocked",
+        "timestamp": 1795164319.6934922,
+        "details": "{\"destination\": \"https://evil.example/send\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-038BF6B7E19F4F759D0B8E2ECE68B5E5",
+        "timestamp": 1795164319.6934922
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-113E233733B547DAB7B6D5F126C92BB5",
+        "timestamp": 1795164319.6934922
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-04C1F786099A462D92AA2C4F4206C6EE",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-295AE67772884D5296C649EE3B2B62B5",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-A2E9A8BAD6264E0E9BA5D12FEB63E11A",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-87D8D074FB744C3A821C5187B8BF440C",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-038BF6B7E19F4F759D0B8E2ECE68B5E5",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-113E233733B547DAB7B6D5F126C92BB5",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-08976164EE464066BFF75A94B3580701",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "approved",
+        "approval_id": "HITL-08976164EE464066BFF75A94B3580701",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "consumed",
+        "approval_id": "HITL-08976164EE464066BFF75A94B3580701",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "simulated_execution",
+        "timestamp": 1795165226.4318614,
+        "details": "{\"status\": \"executed\", \"simulated\": true, \"receipt_id\": \"sim-d86084d26dfa480c9da05522261d38ed\"}"
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795165226.4318614,
+        "details": "{\"approval_id\": \"HITL-08976164EE464066BFF75A94B3580701\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-5A73C602C8DB48B2BCC687AA86D582CB",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "rejected",
+        "approval_id": "HITL-5A73C602C8DB48B2BCC687AA86D582CB",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795165226.4318614,
+        "details": "{\"approval_id\": \"HITL-5A73C602C8DB48B2BCC687AA86D582CB\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-E83D0E869865490D9F5988EEB4BA4BB6",
+        "timestamp": 1795165226.4318614
+      },
+      {
+        "event": "expired",
+        "approval_id": "HITL-E83D0E869865490D9F5988EEB4BA4BB6",
+        "timestamp": 1795166127.4318614
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795166127.4318614,
+        "details": "{\"approval_id\": \"HITL-E83D0E[REDACTED]D9F5988EEB4BA4BB6\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-36EA25967DDC436085CCC11A168236EF",
+        "timestamp": 1795166127.4318614
+      },
+      {
+        "event": "approved",
+        "approval_id": "HITL-36EA25967DDC436085CCC11A168236EF",
+        "timestamp": 1795166127.4318614
+      },
+      {
+        "event": "execution_denied",
+        "timestamp": 1795166127.4318614,
+        "details": "{\"approval_id\": \"HITL-36EA25967DDC436085CCC11A168236EF\"}"
+      },
+      {
+        "event": "egress_blocked",
+        "timestamp": 1795166127.4318614,
+        "details": "{\"destination\": \"https://evil.example/send\"}"
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-0F97E6752C5944F9AF19C96A6E5799DC",
+        "timestamp": 1795166127.4318614
+      },
+      {
+        "event": "submitted",
+        "approval_id": "HITL-3D083EC8E2584DE9B7C0649B3574CA34",
+        "timestamp": 1795166127.4318614
+      }
+    ]
+  }
+}

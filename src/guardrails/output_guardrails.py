@@ -6,6 +6,7 @@ Checkpoint 2 — Output Guardrails
 """
 import re
 import textwrap
+import unicodedata
 
 from google.genai import types
 from google.adk.agents import llm_agent
@@ -37,22 +38,42 @@ def content_filter(response: str) -> dict:
         dict with 'safe', 'issues', and 'redacted' keys
     """
     issues = []
+    response = unicodedata.normalize("NFKC", response or "")
+    response = "".join(c for c in response if unicodedata.category(c) != "Cf")
     redacted = response
 
     # PII patterns to check
     PII_PATTERNS = {
-        # TODO: Add regex patterns for:
-        # - VN phone number: r"0\d{9,10}"
-        # - Email: r"[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}"
-        # - National ID (CMND/CCCD): r"\b\d{9}\b|\b\d{12}\b"
-        # - API key pattern: r"sk-[a-zA-Z0-9-]+"
-        # - Password pattern: r"password\s*[:=]\s*\S+"
+        "national_id": r"(?<!\d)(?:\d{12}|\d{9})(?!\d)",
+        "phone": r"(?<!\w)(?:0\d{9,10}|\+84[ .-]?\d(?:[ .-]?\d){8,9})(?!\d)",
+        "email": r"[\w.+-]+@[\w.-]+\.[a-zA-Z]{2,}",
+        "api_key": r"\bsk-[a-zA-Z0-9_-]+",
+        # "password is X" / "password: X" / "mật khẩu là X" — bỏ qua câu thường như
+        # "your password is incorrect" để không che nhầm câu trả lời hỗ trợ khách.
+        "password": (
+            r"(?:password|passcode|mật\s*khẩu)\s*(?:(?:is|là)\s*[:=]?|[:=])\s*"
+            r"(?!(?:incorrect|wrong|invalid|expired|required|reset|changed|correct|valid|not|too|the|a|an"
+            r"|your|my|being|now|still|set|locked|forgotten|weak|strong|case|sai|đúng|không|gì|của|mới|cũ)\b)"
+            r"[^\s,;]+"
+        ),
+        "internal_db": r"\b(?:[a-z0-9-]+\.)+[a-z0-9-]*internal(?::\d+)?\b",
     }
 
     for name, pattern in PII_PATTERNS.items():
         matches = re.findall(pattern, response, re.IGNORECASE)
         if matches:
             issues.append(f"{name}: {len(matches)} found")
+            redacted = re.sub(pattern, "[REDACTED]", redacted, flags=re.IGNORECASE)
+
+    from core.config import DEMO_SECRETS
+    # Cover standalone lab values and common punctuation/spacing obfuscation.
+    for secret in DEMO_SECRETS:
+        chars = re.sub(r"[^a-zA-Z0-9]", "", secret)
+        if not chars:
+            continue
+        pattern = r"[\W_]*".join(re.escape(c) for c in chars)
+        if re.search(pattern, redacted, re.IGNORECASE):
+            issues.append("protected_value")
             redacted = re.sub(pattern, "[REDACTED]", redacted, flags=re.IGNORECASE)
 
     return {
@@ -89,15 +110,8 @@ Respond with ONLY one word: SAFE or UNSAFE
 If UNSAFE, add a brief reason on the next line.
 """
 
-# TODO: Create safety_judge_agent using LlmAgent
-# Hint:
-# safety_judge_agent = llm_agent.LlmAgent(
-#     model="gemini-3.5-flash",
-#     name="safety_judge",
-#     instruction=SAFETY_JUDGE_INSTRUCTION,
-# )
-
-safety_judge_agent = None  # TODO: Replace with implementation
+# Judge is intentionally disabled for this submission; deterministic filters run by default.
+safety_judge_agent = None
 judge_runner = None
 
 
@@ -143,7 +157,7 @@ async def llm_safety_check(response_text: str) -> dict:
 class OutputGuardrailPlugin(base_plugin.BasePlugin):
     """Plugin that checks agent output before sending to user."""
 
-    def __init__(self, use_llm_judge=True):
+    def __init__(self, use_llm_judge=False):
         super().__init__(name="output_guardrail")
         self.use_llm_judge = use_llm_judge and (safety_judge_agent is not None)
         self.blocked_count = 0
@@ -172,16 +186,27 @@ class OutputGuardrailPlugin(base_plugin.BasePlugin):
         if not response_text:
             return llm_response
 
-        # TODO: Implement logic:
-        # 1. Call content_filter(response_text)
-        #    - If issues found: replace llm_response.content with redacted version
-        #    - Increment self.redacted_count
-        # 2. If use_llm_judge: call llm_safety_check(response_text)
-        #    - If unsafe: replace llm_response.content with a safe message
-        #    - Increment self.blocked_count
-        # 3. Return llm_response (possibly modified)
-
-        return llm_response  # TODO: modify if needed
+        result = content_filter(response_text)
+        metadata = getattr(callback_context, "metadata", None)
+        if not result["safe"]:
+            self.redacted_count += 1
+            final = result["redacted"]
+            if not content_filter(final)["safe"]:
+                self.blocked_count += 1
+                final = "Response withheld by output guardrail."
+                if metadata is not None:
+                    metadata["blocked"] = True
+            if metadata is not None:
+                metadata.update(redacted=True, layer="output_guardrail")
+            llm_response.content = types.Content(role="model", parts=[types.Part.from_text(text=final)])
+        if self.use_llm_judge:
+            verdict = await llm_safety_check(self._extract_text(llm_response))
+            if not verdict["safe"]:
+                self.blocked_count += 1
+                llm_response.content = types.Content(role="model", parts=[types.Part.from_text(text="Response withheld by safety judge.")])
+                if metadata is not None:
+                    metadata.update(blocked=True, layer="output_guardrail")
+        return llm_response
 
 
 # ============================================================

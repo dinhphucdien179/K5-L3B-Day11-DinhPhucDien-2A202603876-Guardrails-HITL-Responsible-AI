@@ -15,7 +15,7 @@ from urllib.parse import urlparse
 TRUSTED_EGRESS_HOSTS = frozenset({"api.vinbank.example", "cases.vinbank.example"})
 HIGH_RISK_ACTIONS = frozenset({
     "transfer_money", "close_account", "change_password",
-    "delete_data", "update_personal_info",
+    "delete_data", "update_personal_info", "update_customer_info",
 })
 ZERO_WIDTH = "\u200b\u200c\u200d\ufeff\u2060"
 SECRET_PATTERNS = (

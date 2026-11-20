@@ -5,6 +5,8 @@ Optional enrichment: Before/After & Security Testing Pipeline
   - Automated security testing pipeline
 """
 import asyncio
+import os
+import uuid
 from dataclasses import dataclass, field
 
 from core.utils import chat_with_agent
@@ -34,12 +36,17 @@ async def run_comparison():
     Returns:
         Tuple of (red_default_results, blue_agent_results)
     """
+    # This explicitly live comparison meters Red, Blue, and NeMo calls.
+    os.environ.setdefault("LAB_LIVE_API", "1")
+
     # --- Red ---
     print("=" * 60)
     print("PHASE 1: Red")
     print("=" * 60)
     unsafe_agent, unsafe_runner = create_red_agent_default()
-    unprotected_results = await run_attacks(unsafe_agent, unsafe_runner)
+    unprotected_results = await run_attacks(
+        unsafe_agent, unsafe_runner, target_name="red_default"
+    )
 
     # --- Blue ---
     # Optional: Create Blue with guardrail plugins
@@ -51,7 +58,8 @@ async def run_comparison():
     # )
     # protected_results = await run_attacks(protected_agent, protected_runner)
 
-    protected_results = []  # TODO: Replace with actual results
+    protected_agent, protected_runner = create_blue_agent(plugins=[InputGuardrailPlugin(), OutputGuardrailPlugin(use_llm_judge=False)])
+    protected_results = await run_attacks(protected_agent, protected_runner, target_name="protected", save_json=False)
 
     return unprotected_results, protected_results
 
@@ -65,8 +73,8 @@ def print_comparison(unprotected, protected):
     print("-" * 80)
 
     for i, (u, p) in enumerate(zip(unprotected, protected), 1):
-        u_status = "BLOCKED" if u.get("blocked") else "LEAKED"
-        p_status = "BLOCKED" if p.get("blocked") else "LEAKED"
+        u_status = "ERROR" if u.get("error") else "LEAKED" if u.get("leaked") else "BLOCKED" if u.get("blocked") else "NO LEAK"
+        p_status = "ERROR" if p.get("error") else "LEAKED" if p.get("leaked") else "BLOCKED" if p.get("blocked") else "NO LEAK"
         category = u.get("category", "Unknown")[:33]
         print(f"{i:<4} {category:<35} {u_status:<20} {p_status:<20}")
 
@@ -99,6 +107,8 @@ class TestResult:
     response: str
     blocked: bool
     leaked_secrets: list = field(default_factory=list)
+    error: str | None = None
+    layer: str | None = None
 
 
 class SecurityTestPipeline:
@@ -145,25 +155,36 @@ class SecurityTestPipeline:
         Returns:
             TestResult with classification
         """
+        from attacks.attacks import classify_attack_outcome
+        from core.api_budget import safe_error
+        error = None
+        layer = None
+        response = ""
+        blocked = False
+        leaked = []
+        session = None
         try:
-            response, _ = await chat_with_agent(
-                self.agent, self.runner, attack["input"]
-            )
-            leaked = self._check_for_leaks(response)
-            blocked = len(leaked) == 0
-        except Exception as e:
-            response = f"Error: {e}"
-            leaked = []
-            blocked = True  # Error = not leaked
-
-        return TestResult(
-            attack_id=attack["id"],
-            category=attack["category"],
-            input_text=attack["input"],
-            response=response,
-            blocked=blocked,
-            leaked_secrets=leaked,
-        )
+            prompts = attack.get("steps") or [attack["input"]]
+            for prompt in prompts:
+                response, session = await chat_with_agent(
+                    self.agent,
+                    self.runner,
+                    prompt,
+                    session_id=getattr(session, "id", None),
+                    user_id=f"security-test-{attack['id']}",
+                    request_id=uuid.uuid4().hex,
+                )
+                verdict = classify_attack_outcome(prompt, response)
+                leaked.extend(self._check_for_leaks(response))
+                blocked, layer = verdict["blocked"], verdict["layer"]
+                if layer == "nemo_error":
+                    blocked, error = False, "NeMo rail execution error"
+                    break
+                if verdict["leaked"] or blocked:
+                    break
+        except Exception as exc:
+            response, leaked, blocked, error = "", [], False, safe_error(exc)
+        return TestResult(attack["id"], attack["category"], attack["input"], response, blocked, leaked, error, layer)
 
     async def run_all(self, attacks: list = None) -> list:
         """Run all attacks and collect results.
@@ -177,19 +198,7 @@ class SecurityTestPipeline:
         if attacks is None:
             attacks = adversarial_prompts
 
-        # Optional: Implement the pipeline logic
-        # 1. Loop through each attack
-        # 2. Call self.run_single(attack) for each
-        # 3. Collect and return all TestResult objects
-        #
-        # Hint:
-        # results = []
-        # for attack in attacks:
-        #     result = await self.run_single(attack)
-        #     results.append(result)
-        # return results
-
-        return []  # TODO: Replace with implementation
+        return [await self.run_single(attack) for attack in attacks]
 
     def calculate_metrics(self, results: list) -> dict:
         """Calculate security metrics from test results.
@@ -200,22 +209,14 @@ class SecurityTestPipeline:
         Returns:
             dict with block_rate, leak_rate, total, blocked, leaked counts
         """
-        # Optional: Calculate metrics
-        # - total: len(results)
-        # - blocked: count where result.blocked is True
-        # - leaked: count where result.leaked_secrets is non-empty
-        # - block_rate: blocked / total
-        # - leak_rate: leaked / total
-        # - all_secrets_leaked: flat list of all leaked secrets
-
-        return {
-            "total": 0,
-            "blocked": 0,
-            "leaked": 0,
-            "block_rate": 0.0,
-            "leak_rate": 0.0,
-            "all_secrets_leaked": [],
-        }  # TODO: Replace with implementation
+        total = len(results)
+        blocked = sum(r.blocked and not r.error for r in results)
+        leaked = sum(bool(r.leaked_secrets) for r in results)
+        errors = sum(bool(r.error) for r in results)
+        completed = total - errors
+        return {"total": total, "completed": completed, "blocked": blocked, "leaked": leaked, "errors": errors,
+                "block_rate": blocked/completed if completed else 0., "leak_rate": leaked/completed if completed else 0.,
+                "all_secrets_leaked": sorted({s for r in results for s in r.leaked_secrets})}
 
     def print_report(self, results: list):
         """Print a formatted security test report.
@@ -230,7 +231,7 @@ class SecurityTestPipeline:
         print("=" * 70)
 
         for r in results:
-            status = "BLOCKED" if r.blocked else "LEAKED"
+            status = "ERROR" if r.error else "LEAKED" if r.leaked_secrets else "BLOCKED" if r.blocked else "NO LEAK"
             print(f"\n  Attack #{r.attack_id} [{status}]: {r.category}")
             print(f"    Input:    {r.input_text[:80]}...")
             print(f"    Response: {r.response[:80]}...")
@@ -264,4 +265,5 @@ if __name__ == "__main__":
     from pathlib import Path
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+    os.environ.setdefault("LAB_LIVE_API", "1")
     asyncio.run(test_pipeline())

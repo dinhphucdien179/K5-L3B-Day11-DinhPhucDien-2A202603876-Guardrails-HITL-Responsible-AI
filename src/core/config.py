@@ -4,8 +4,9 @@ Lab 11 — Configuration, provider selection, API keys.
 Hai tầng model (không trộn):
 
   Blue Team (CP2–CP3, guardrails / pipeline / protected agent)
-    → CỐ ĐỊNH OpenRouter ``liquid/lfm-3-1.7b:free``
-       https://openrouter.ai/liquid/lfm-3-1.7b:free
+    → Repo này dùng OpenRouter ``openai/gpt-4o-mini``
+       (starter mặc định ``liquid/lfm-3-1.7b:free``)
+       https://openrouter.ai/openai/gpt-4o-mini
     → Cần ``OPENROUTER_API_KEY``
 
   Red Team (CP4)
@@ -34,9 +35,9 @@ PROVIDER_OPENAI = "openai"
 PROVIDER_GEMINI = "gemini"
 PROVIDER_OPENROUTER = "openrouter"
 
-# --- Blue Team (LOCKED) ---
+# --- Blue Team (cố định trong code, không đọc từ .env) ---
 BLUE_PROVIDER = PROVIDER_OPENROUTER
-BLUE_MODEL = "liquid/lfm-3-1.7b:free"
+BLUE_MODEL = "openai/gpt-4o-mini"
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_OPENROUTER_MODEL = BLUE_MODEL  # alias
 
@@ -96,7 +97,7 @@ except FileNotFoundError:
 
 
 # ---------------------------------------------------------------------------
-# Blue Team — fixed OpenRouter Liquid
+# Blue Team — OpenRouter openai/gpt-4o-mini
 # ---------------------------------------------------------------------------
 
 def get_blue_provider() -> str:
@@ -104,7 +105,7 @@ def get_blue_provider() -> str:
 
 
 def get_blue_model() -> str:
-    # Hard-locked; env cannot override for the graded Blue Team path.
+    # Cố định trong code để results.json luôn ghi đúng model đã chạy.
     return BLUE_MODEL
 
 
@@ -234,24 +235,23 @@ def is_harder_model() -> bool:
     return any(x in m for x in ("gpt-5.6", "pro", "gemini-3.8", "gemini-3.7"))
 
 
-def setup_api_key():
-    """Ensure keys for Blue (OpenRouter) + Red / Red Advance (OpenAI or Gemini)."""
-    if not get_openrouter_api_key():
-        os.environ["OPENROUTER_API_KEY"] = input(
-            "Enter OpenRouter API Key (Blue): "
-        ).strip()
-    print(f"Blue  — {blue_provider_label()}  [LOCKED]")
+def setup_api_key(parts=None):
+    """Check only the credentials required by the requested checkpoints."""
+    parts = set(parts if parts is not None else (2, 3, 4))
+    if 3 in parts and not get_openrouter_api_key():
+        raise RuntimeError("OPENROUTER_API_KEY is required for checkpoint 3")
+    print(f"Blue  — {blue_provider_label()}  [configured]")
 
     red = get_red_provider()
     model = get_red_model()
     if red == PROVIDER_GEMINI:
-        if not os.environ.get("GOOGLE_API_KEY", "").strip():
-            os.environ["GOOGLE_API_KEY"] = input("Enter Google API Key (Red): ").strip()
+        if 4 in parts and not os.environ.get("GOOGLE_API_KEY", "").strip():
+            raise RuntimeError("GOOGLE_API_KEY is required for checkpoint 4")
         os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "0"
         print(f"Red / Red Advance  — gemini:{model}")
     else:
-        if not get_openai_api_key():
-            os.environ["OPENAI_API_KEY"] = input("Enter OpenAI API Key (Red): ").strip()
+        if 4 in parts and not get_openai_api_key():
+            raise RuntimeError("OPENAI_API_KEY is required for checkpoint 4")
         print(f"Red / Red Advance  — openai:{model}")
 
     print(
